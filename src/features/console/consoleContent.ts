@@ -1,0 +1,77 @@
+import type { WorkflowStage } from "./consoleTypes";
+
+export const workflowStages: WorkflowStage[] = [
+  {
+    id: "thermal",
+    short: "Thermal",
+    title: "Thermal history",
+    status: "Width validated",
+    source: "Retained nine-case thermal width dataset at v=500 mm/s.",
+    evidence: [
+      "Thermal width validation gives MAE=7.604 um and MAPE=5.810%.",
+    ],
+    nextGate: "Depth validation is missing and remains the next thermal evidence gate.",
+    limitation: "Width error bars describe within-image line-measurement sample variation, not independent-build repeatability.",
+    readiness: "Width validation metrics are verified; depth evidence remains unavailable.",
+  },
+  {
+    id: "grain",
+    short: "Microstructure",
+    title: "Grain morphology",
+    status: "Verified multilayer",
+    source: "CUDA single-layer P-v sweep and completed multilayer simulations.",
+    evidence: [
+      "Nine CUDA P-v cases and nine closed magnetic loops form the verified single-layer baseline.",
+      "The current dataset indicates stronger coarsening at higher power and lower scan speed.",
+      "P160_V400 finishes with 8012 grains; P80_V1000 finishes with 9866.",
+      "P160_V400 is the low-remanence outlier with Mr/Ms=0.7111.",
+      "Verified multilayer state: 501 x 421 x 271, 16000 initial grains, completed to 6500 us.",
+      "Layer activation occurs at 0, 2500, and 5000 us.",
+      "The anisotropy baseline is 14619 versus 14618 globally.",
+      "Layer differences are 0.89%, 7.87%, and 11.65%; this indicates local sensitivity, not strong global coarsening change.",
+    ],
+    nextGate: "The nine-case grain-size table is pending HPC extraction.",
+    limitation: "Observed coarsening trends describe the current dataset and do not establish a general material law.",
+    readiness: "Single-layer and multilayer state summaries are verified; the grain-size comparison table is pending.",
+  },
+  {
+    id: "mesh",
+    short: "Mesh",
+    title: "Tetrahedral mesh",
+    status: "Verified baseline",
+    source: "S2M conversion workflow and asymmetric marker verification.",
+    evidence: [
+      "S2M: X is preserved, Y/Z are reversed, and the layer-normal Z is retained.",
+    ],
+    nextGate: "Add a publication annotation that makes the reversed Y/Z directions explicit.",
+    limitation: "Layer order and spatial interpretation must account for the Y and Z reversal.",
+    readiness: "The coordinate transform is verified; orientation-figure readiness has not been assessed.",
+  },
+  {
+    id: "magnetic",
+    short: "Magnetic response",
+    title: "Magnetic response",
+    status: "Verified baseline",
+    source: "Nine MOOSE / NISOS hysteresis outputs paired with the CUDA cases.",
+    evidence: [
+      "All nine loops are closed; Hc spans approximately 0.9197-0.9615.",
+      "Hc varies weakly across the current nine cases.",
+    ],
+    nextGate: "Link the pending grain-size table to a defensible switching parameter law.",
+    limitation: "The model supports no quantitative SmCo5 coercivity prediction.",
+    readiness: "Nine closed loops are verified; figure publication readiness has not been assessed.",
+  },
+  {
+    id: "figures",
+    short: "Figures",
+    title: "Manuscript and figures",
+    status: "Pending extraction",
+    source: "Evidence-gated project records from the thermal, CUDA, S2M, and magnetic stages.",
+    evidence: [
+      "Thermal width metrics, nine closed loops, and completed multilayer state have traceable evidence.",
+    ],
+    nextGate: "Extract the nine-case grain-size table and approve each figure caption against its source.",
+    limitation: "No figure is treated as publication-ready without provenance and a passed evidence gate.",
+    readiness: "Available evidence is traceable; no figure is designated publication-ready.",
+  },
+];

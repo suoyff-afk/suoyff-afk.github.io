@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.wrangler/
+*.log
+*.tsbuildinfo
+audit-*/
+qa-screenshots/
+design-qa.md
+vite.config.js
+vite.config.d.ts
+build/*.js
+build/*.d.ts
