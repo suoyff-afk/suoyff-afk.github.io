@@ -75,7 +75,6 @@ export function Header() {
           <nav className="desktop-nav" aria-label="Primary">
             {navItems}
           </nav>
-          <NavLink className="cv-link" to="/cv">View CV</NavLink>
           <button
             ref={toggleRef}
             className="menu-toggle"
@@ -95,7 +94,6 @@ export function Header() {
               <NavLink ref={index === 0 ? firstMenuLinkRef : undefined} key={to} to={to}>{label}</NavLink>
             ))}
           </nav>
-          <NavLink className="button button--dark" to="/cv">View CV</NavLink>
         </div>
       )}
     </>

@@ -37,8 +37,10 @@ describe("site routes and navigation", () => {
   it("navigates between primary pages", async () => {
     renderAt();
     const nav = screen.getByRole("navigation", { name: "Primary" });
+    const header = screen.getByRole("banner");
     expect(within(nav).queryByRole("link", { name: "Contact" })).not.toBeInTheDocument();
     expect(within(nav).queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
+    expect(within(header).getAllByRole("link", { name: /CV/i })).toHaveLength(1);
     expect(screen.queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
     await userEvent.click(within(nav).getByRole("link", { name: "Research" }));
     expect(screen.getByRole("heading", { name: "Research", level: 1 })).toBeInTheDocument();
@@ -72,6 +74,7 @@ describe("site routes and navigation", () => {
     const menu = screen.getByRole("dialog", { name: "Mobile navigation" });
     expect(within(screen.getByRole("banner")).queryByRole("dialog")).not.toBeInTheDocument();
     expect(menu).toBeInTheDocument();
+    expect(within(menu).getAllByRole("link", { name: /CV/i })).toHaveLength(1);
     expect(within(menu).queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
     await userEvent.click(within(menu).getByRole("link", { name: "Research" }));
     expect(screen.getByRole("heading", { name: "Research", level: 1 })).toBeInTheDocument();
