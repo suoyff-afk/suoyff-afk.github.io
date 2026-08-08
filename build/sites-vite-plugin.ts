@@ -25,6 +25,7 @@ export function sitesWorkerOutput(): Plugin {
     },
     async closeBundle() {
       const dist = resolve(root, "dist");
+      const clientIndex = resolve(dist, "client", "index.html");
       const workerSourcePath = resolve(root, "worker", "index.ts");
       const serverDirectory = resolve(dist, "server");
       const workerSource = await readFile(workerSourcePath, "utf8");
@@ -35,6 +36,7 @@ export function sitesWorkerOutput(): Plugin {
       await rm(serverDirectory, { force: true, recursive: true });
       await mkdir(serverDirectory, { recursive: true });
       await writeFile(resolve(serverDirectory, "index.js"), code, "utf8");
+      await copyFile(clientIndex, resolve(dist, "client", "404.html"));
 
       const hostingConfig = resolve(root, ".openai", "hosting.json");
       if (await exists(hostingConfig)) {
