@@ -1,7 +1,7 @@
 export const pageRoutes = [
   { path: "/", label: "Home", title: "Home | Yifan Suo" },
   { path: "/research", label: "Research", title: "Research | Yifan Suo" },
-  { path: "/console", label: "Console", title: "Console | Yifan Suo" },
+  { path: "/research/smco-workflow", label: "SmCo Workflow", title: "SmCo Workflow | Yifan Suo" },
   { path: "/cv", label: "CV", title: "CV | Yifan Suo" },
 ] as const;
 

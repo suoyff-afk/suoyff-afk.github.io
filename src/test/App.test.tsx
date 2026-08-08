@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
@@ -19,7 +19,7 @@ describe("site routes and navigation", () => {
   it.each([
     ["/", "Computational Materials Scientist"],
     ["/research", "Research"],
-    ["/console", "Research is in motion, Yifan"],
+    ["/research/smco-workflow", "Research is in motion, Yifan"],
     ["/cv", "Profile & CV"],
   ])("renders %s", (path, heading) => {
     renderAt(path);
@@ -27,7 +27,7 @@ describe("site routes and navigation", () => {
   });
 
   it("renders all main pages after style module split", () => {
-    for (const path of ["/", "/research", "/console", "/cv"]) {
+    for (const path of ["/", "/research", "/research/smco-workflow", "/cv"]) {
       const { unmount } = renderAt(path);
       expect(screen.getByRole("main")).toBeInTheDocument();
       unmount();
@@ -38,6 +38,8 @@ describe("site routes and navigation", () => {
     renderAt();
     const nav = screen.getByRole("navigation", { name: "Primary" });
     expect(within(nav).queryByRole("link", { name: "Contact" })).not.toBeInTheDocument();
+    expect(within(nav).queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
     await userEvent.click(within(nav).getByRole("link", { name: "Research" }));
     expect(screen.getByRole("heading", { name: "Research", level: 1 })).toBeInTheDocument();
   });
@@ -57,7 +59,7 @@ describe("site routes and navigation", () => {
     expect(screen.getByRole("contentinfo")).toHaveTextContent("TU Darmstadt / Computational materials science");
     home.unmount();
 
-    renderAt("/console");
+    renderAt("/research/smco-workflow");
     expect(screen.getByText("Additive manufacturing / Computational materials science")).toBeInTheDocument();
     expect(screen.getByText("Simulation result")).toBeInTheDocument();
   });
@@ -70,14 +72,21 @@ describe("site routes and navigation", () => {
     const menu = screen.getByRole("dialog", { name: "Mobile navigation" });
     expect(within(screen.getByRole("banner")).queryByRole("dialog")).not.toBeInTheDocument();
     expect(menu).toBeInTheDocument();
-    await userEvent.click(within(menu).getByRole("link", { name: "Console" }));
-    expect(screen.getByRole("heading", { name: "Research is in motion, Yifan", level: 1 })).toBeInTheDocument();
+    expect(within(menu).queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
+    await userEvent.click(within(menu).getByRole("link", { name: "Research" }));
+    expect(screen.getByRole("heading", { name: "Research", level: 1 })).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveFocus();
+  });
+
+  it("redirects the legacy Console route to the canonical SmCo workflow", async () => {
+    renderAt("/console");
+    await waitFor(() => expect(document.title).toBe("SmCo Workflow | Yifan Suo"));
+    expect(screen.getByRole("heading", { name: "Research is in motion, Yifan", level: 1 })).toBeInTheDocument();
   });
 
   it.each([
     ["/research", "Process, structure, property"],
-    ["/console", "Research Workflow Console"],
+    ["/research/smco-workflow", "Research Workflow Console"],
     ["/cv", "CV & About"],
   ])("removes the old level-one heading on %s", (path, oldHeading) => {
     renderAt(path);
@@ -157,7 +166,7 @@ describe("evidence-first content", () => {
     expect(areas.compareDocumentPosition(gallery) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
-  it("keeps SmCo as a featured result card with a concise console handoff", () => {
+  it("keeps SmCo as a featured result card with a focused workflow handoff", () => {
     renderAt("/research");
     const flagship = screen.getByRole("article", { name: "SmCo5 process-structure-property workflow research project" });
     expect(flagship).toHaveAttribute("data-variant", "featured");
@@ -169,7 +178,7 @@ describe("evidence-first content", () => {
     expect(within(flagship).getByRole("img", { name: /multilayer grain morphology comparison/i })).toBeInTheDocument();
     expect(within(flagship).getByText(/simulation result.*local differences do not imply a strong global coarsening change/i)).toBeInTheDocument();
     expect(flagship).not.toHaveTextContent(/501 x 421 x 271|MAE=|Hc spans/i);
-    expect(within(flagship).getByRole("link", { name: "Open workflow console" })).toHaveAttribute("href", "/console");
+    expect(within(flagship).getByRole("link", { name: "Explore research workflow" })).toHaveAttribute("href", "/research/smco-workflow");
   });
 
   it("omits an empty results list when a project has no results", () => {

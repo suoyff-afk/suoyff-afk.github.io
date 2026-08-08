@@ -13,7 +13,6 @@ export function HomePage() {
           <div className="hero-actions">
             <Link className="button button--dark" to="/cv">View CV</Link>
             <Link className="button" to="/research">Research</Link>
-            <Link className="button" to="/console">Console</Link>
           </div>
           <CopyEmail />
         </div>

@@ -37,7 +37,7 @@ export const researchProjects: ResearchProject[] = [
       alt: "Side-by-side multilayer grain morphology comparison for the SmCo5 workflow",
       caption: "Baseline (left) and grain-boundary anisotropy test at eps=0.20 (right), y=250 slice, final step 650000 / 6500 us. Simulation result; local differences do not imply a strong global coarsening change.",
     },
-    action: { label: "Open workflow console", to: "/console" },
+    action: { label: "Explore research workflow", to: "/research/smco-workflow" },
     featured: true,
   },
   {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { assetUrl, routerBasename } from "../app/routes";
+import { assetUrl, routerBasename, titleForPath } from "../app/routes";
 
 describe("base path utilities", () => {
   it("derives a safe router basename", () => {
@@ -10,5 +10,9 @@ describe("base path utilities", () => {
   it("builds an asset URL beneath the configured base", () => {
     expect(assetUrl("assets/workflow-concept.png", "/portfolio/")).toBe("/portfolio/assets/workflow-concept.png");
     expect(assetUrl("/assets/workflow-concept.png", "/")).toBe("/assets/workflow-concept.png");
+  });
+
+  it("uses the canonical SmCo workflow page title", () => {
+    expect(titleForPath("/research/smco-workflow")).toBe("SmCo Workflow | Yifan Suo");
   });
 });

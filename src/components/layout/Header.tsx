@@ -3,7 +3,6 @@ import { NavLink, useLocation } from "react-router-dom";
 
 const links = [
   ["Research", "/research"],
-  ["Console", "/console"],
   ["CV", "/cv"],
 ] as const;
 

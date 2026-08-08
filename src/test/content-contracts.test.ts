@@ -15,7 +15,7 @@ describe("feature content contracts", () => {
     expect(researchProjects[0]).toMatchObject({
       id: "smco",
       featured: true,
-      action: { label: "Open workflow console", to: "/console" },
+      action: { label: "Explore research workflow", to: "/research/smco-workflow" },
     });
     expect(industryResearch.id).toBe("shining-3d");
     expect(researchAreas).toHaveLength(4);
