@@ -22,13 +22,12 @@ describe("feature content contracts", () => {
     expect(researchMethods).toContain("CUDA / GPU simulation");
   });
 
-  it("keeps console stages stable", () => {
+  it("keeps the four scientific workflow stages stable", () => {
     expect(workflowStages.map((stage) => stage.id)).toEqual([
       "thermal",
       "grain",
       "mesh",
       "magnetic",
-      "figures",
     ]);
     expect(workflowStages.every((stage) => stage.evidence.length > 0)).toBe(true);
   });

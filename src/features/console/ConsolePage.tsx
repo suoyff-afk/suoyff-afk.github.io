@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { assetUrl } from "../../app/routes";
 import { EvidenceTag } from "../../components/common/EvidenceTag";
 import { workflowStages } from "./consoleContent";
 
@@ -9,105 +11,83 @@ export function ConsolePage() {
 
   return (
     <div className="console-canvas">
-      <section className="research-desk" aria-label="Research workflow console">
+      <section className="research-desk" aria-label="SmCo research workflow">
         <header className="desk-hero reveal">
-          <div>
-            <p className="eyebrow">RESEARCH WORKFLOW CONSOLE</p>
-            <h1>Research is in motion, Yifan</h1>
-            <p>Additive manufacturing {" / "} Computational materials science</p>
+          <div className="desk-hero__copy">
+            <p className="eyebrow">SMCO CASE STUDY / RESEARCH WORKFLOW</p>
+            <h1>SmCo Process-Structure-Property Workflow</h1>
+            <p className="desk-hero__lede">LPBF thermal history {" -> "} CUDA 3D grain evolution {" -> "} S2M mesh conversion {" -> "} MOOSE / NISOS magnetic response</p>
           </div>
-          <div className="desk-hero__status"><span aria-hidden="true" />Evidence-first workspace</div>
+          <div className="desk-hero__aside">
+            <div className="desk-hero__status"><span aria-hidden="true" />Verified evidence only</div>
+            <nav className="desk-hero__actions" aria-label="Case study actions">
+              <Link className="button" to="/research">Back to Research</Link>
+              <Link className="button button--dark" to="/cv">View CV</Link>
+            </nav>
+          </div>
         </header>
 
-        <section className="desk-archive" aria-label="Research archive">
-        <div className="desk-layout">
-          <nav className="desk-navigation" aria-label="Workflow stages">
-            <p className="eyebrow">WORKFLOW</p>
-          {workflowStages.map((stage, index) => (
-              <button
-                key={stage.id}
-                type="button"
-                className={selectedId === stage.id ? "desk-stage is-selected" : "desk-stage"}
-                aria-pressed={selectedId === stage.id}
-                onClick={() => setSelectedId(stage.id)}
-              >
-                <span>{String(index + 1).padStart(2, "0")}</span>{stage.short}
-            </button>
-          ))}
-          <aside className="workspace-scope" aria-label="Workspace scope">
-            <p className="eyebrow">WORKSPACE SCOPE</p>
-            <strong>SmCo permanent magnets</strong>
-            <span>Evidence workspace</span>
-          </aside>
-        </nav>
+        <section className="desk-archive" aria-label="SmCo research workflow case study">
+          <div className="desk-layout">
+            <nav className="desk-navigation" aria-label="Workflow stages">
+              <p className="eyebrow">COMPUTATIONAL PIPELINE</p>
+              {workflowStages.map((stage, index) => (
+                <button
+                  key={stage.id}
+                  type="button"
+                  className={selectedId === stage.id ? "desk-stage is-selected" : "desk-stage"}
+                  aria-pressed={selectedId === stage.id}
+                  onClick={() => setSelectedId(stage.id)}
+                >
+                  <span>{String(index + 1).padStart(2, "0")}</span>{stage.short}
+                </button>
+              ))}
+              <aside className="workspace-scope" aria-label="Research scope">
+                <p className="eyebrow">RESEARCH SCOPE</p>
+                <strong>SmCo permanent magnets</strong>
+                <span>Process-structure-property</span>
+              </aside>
+            </nav>
 
-          <section className="desk-previews" aria-label="Research previews">
-            <figure className="preview-card">
-              <img src="/assets/workflow-concept.png" alt="Conceptual workflow from PBF process to property response" />
-              <figcaption><span>Workflow map</span><small>Conceptual illustration</small></figcaption>
-            </figure>
-            <figure className="preview-card preview-card--result">
-              <img src="/assets/research/smco-multilayer-comparison.png" alt="Multilayer grain morphology comparison from phase-field simulation" />
-              <figcaption><span>Multilayer morphology</span><small>Simulation result</small></figcaption>
-            </figure>
-            <section className="archive-card" aria-label="HPC handoff">
-              <p className="eyebrow">HPC HANDOFF</p>
-              <strong>Extraction gate</strong>
-              <p>Grain-size table pending extraction.</p>
-              <small>Live monitor not connected</small>
-            </section>
-          </section>
-
-          <article className="desk-main" aria-label={`${selected.title} evidence`} aria-live="polite">
-            <div className="desk-main__header">
-              <div><p className="eyebrow">SELECTED EVIDENCE</p><h2>{selected.title}</h2></div>
-              <EvidenceTag state={selected.status} />
-            </div>
-
-            {hasMicrostructureFigure ? (
-              <figure className="desk-result">
-                <img src="/assets/research/smco-multilayer-comparison.png" alt="Multilayer grain morphology comparison from phase-field simulation" />
-                <figcaption>Verified phase-field result. This comparison is a simulation record, not experimental imagery.</figcaption>
+            <section className="desk-previews" aria-label="Research previews">
+              <figure className="preview-card">
+                <img src={assetUrl("assets/workflow-concept.png")} alt="Conceptual workflow from PBF process to property response" />
+                <figcaption><span>Workflow map</span><small>Conceptual illustration</small></figcaption>
               </figure>
-            ) : (
-              <div className="desk-empty-result">
-                <p className="eyebrow">NO FIGURE ATTACHED</p>
-                <p>This stage has traceable evidence but no approved result image is attached to the console.</p>
+              <figure className="preview-card preview-card--result">
+                <img src={assetUrl("assets/research/smco-multilayer-comparison.png")} alt="Multilayer grain morphology comparison from phase-field simulation" />
+                <figcaption><span>Multilayer morphology</span><small>Simulation result</small></figcaption>
+              </figure>
+            </section>
+
+            <article className="desk-main" aria-label={`${selected.title} evidence`} aria-live="polite">
+              <div className="desk-main__header">
+                <div><p className="eyebrow">CURRENT EVIDENCE</p><h2>{selected.title}</h2></div>
+                <EvidenceTag state={selected.status} />
               </div>
-            )}
 
-            <div className="desk-main__evidence">
-              <p>{selected.evidence[0]}</p>
-              <dl>
-                <div><dt>Source</dt><dd>{selected.source}</dd></div>
-                <div><dt>Next gate</dt><dd>{selected.nextGate}</dd></div>
-              </dl>
-            </div>
-          </article>
-        </div>
+              {hasMicrostructureFigure ? (
+                <figure className="desk-result">
+                  <img src={assetUrl("assets/research/smco-multilayer-comparison.png")} alt="Multilayer grain morphology comparison from phase-field simulation" />
+                  <figcaption>Verified phase-field result. This comparison is a simulation record, not experimental imagery.</figcaption>
+                </figure>
+              ) : (
+                <div className="desk-empty-result">
+                  <p className="eyebrow">RESULT FIGURE NOT ATTACHED</p>
+                  <p>No approved result figure is available for this stage. The documented evidence and limitation remain available below.</p>
+                </div>
+              )}
 
-        <ul className="status-deck" aria-label="Research status deck">
-          <li>
-            <p className="eyebrow">THERMAL EVIDENCE</p>
-            <strong>Width validated</strong>
-            <span>Depth gate pending</span>
-          </li>
-          <li>
-            <p className="eyebrow">MICROSTRUCTURE</p>
-            <strong>Verified multilayer</strong>
-            <span>Nine CUDA cases</span>
-          </li>
-          <li>
-            <p className="eyebrow">MESH CONVERSION</p>
-            <strong>Verified baseline</strong>
-            <span>Y/Z reversal documented</span>
-          </li>
-          <li>
-            <p className="eyebrow">HPC SUBMISSION</p>
-            <strong>Monitor not connected</strong>
-            <span>{selected.nextGate}</span>
-          </li>
-        </ul>
+              <div className="desk-main__evidence">
+                <p>{selected.evidence[0]}</p>
+                <dl>
+                  <div><dt>Source</dt><dd>{selected.source}</dd></div>
+                  <div><dt>Limitation</dt><dd>{selected.limitation}</dd></div>
+                  <div><dt>Next validation</dt><dd>{selected.nextValidation}</dd></div>
+                </dl>
+              </div>
+            </article>
+          </div>
         </section>
       </section>
     </div>

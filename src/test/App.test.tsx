@@ -19,7 +19,7 @@ describe("site routes and navigation", () => {
   it.each([
     ["/", "Computational Materials Scientist"],
     ["/research", "Research"],
-    ["/research/smco-workflow", "Research is in motion, Yifan"],
+    ["/research/smco-workflow", "SmCo Process-Structure-Property Workflow"],
     ["/cv", "Profile & CV"],
   ])("renders %s", (path, heading) => {
     renderAt(path);
@@ -53,14 +53,14 @@ describe("site routes and navigation", () => {
     expect(within(screen.getByRole("contentinfo")).getByRole("button", { name: /copy email/i })).toBeInTheDocument();
   });
 
-  it("uses stable public copy and labels the Console result as a simulation", () => {
+  it("uses stable public copy and labels the workflow result as a simulation", () => {
     const home = renderAt();
     expect(screen.getByText(/PHD STUDENT \/ TU DARMSTADT/i)).toBeInTheDocument();
     expect(screen.getByRole("contentinfo")).toHaveTextContent("TU Darmstadt / Computational materials science");
     home.unmount();
 
     renderAt("/research/smco-workflow");
-    expect(screen.getByText("Additive manufacturing / Computational materials science")).toBeInTheDocument();
+    expect(screen.getByText(/LPBF thermal history.*CUDA 3D grain evolution.*S2M mesh conversion.*MOOSE \/ NISOS magnetic response/i)).toBeInTheDocument();
     expect(screen.getByText("Simulation result")).toBeInTheDocument();
   });
 
@@ -81,7 +81,7 @@ describe("site routes and navigation", () => {
   it("redirects the legacy Console route to the canonical SmCo workflow", async () => {
     renderAt("/console");
     await waitFor(() => expect(document.title).toBe("SmCo Workflow | Yifan Suo"));
-    expect(screen.getByRole("heading", { name: "Research is in motion, Yifan", level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "SmCo Process-Structure-Property Workflow", level: 1 })).toBeInTheDocument();
   });
 
   it.each([
@@ -228,23 +228,24 @@ describe("evidence-first content", () => {
     expect(methods).toHaveTextContent(/Phase field.*finite element.*CUDA.*FE-ANN.*Python.*C\+\+.*XRD.*SEM/i);
   });
 
-  it("renders the console as a calm research desk and changes evidence when a workflow stage is selected", async () => {
-    renderAt("/console");
-    expect(screen.getByRole("heading", { name: "Research is in motion, Yifan", level: 1 })).toBeInTheDocument();
+  it("presents the SmCo workflow as an external case study and changes selected evidence", async () => {
+    renderAt("/research/smco-workflow");
+    expect(screen.getByRole("heading", { name: "SmCo Process-Structure-Property Workflow", level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Back to Research" })).toHaveAttribute("href", "/research");
+    expect(screen.getByRole("link", { name: "View CV" })).toHaveAttribute("href", "/cv");
     const previews = screen.getByRole("region", { name: "Research previews" });
-    expect(screen.getByRole("region", { name: "Research archive" })).toHaveTextContent(/Workflow map.*Multilayer morphology.*HPC handoff/i);
-    expect(screen.getByRole("complementary", { name: "Workspace scope" })).toHaveTextContent(/SmCo permanent magnets.*Evidence workspace/i);
+    expect(screen.getByRole("region", { name: "SmCo research workflow case study" })).toHaveTextContent(/Workflow map.*Multilayer morphology/i);
+    expect(screen.getByRole("complementary", { name: "Research scope" })).toHaveTextContent(/SmCo permanent magnets.*Process-structure-property/i);
     expect(within(previews).getByRole("img", { name: /conceptual workflow from PBF process/i })).toHaveAttribute("src", "/assets/workflow-concept.png");
     expect(screen.getAllByRole("img", { name: /multilayer grain morphology comparison/i })).toHaveLength(2);
     expect(screen.getByRole("navigation", { name: "Workflow stages" })).toHaveTextContent(/Thermal.*Microstructure.*Mesh.*Magnetic response/i);
-    const statusDeck = screen.getByRole("list", { name: "Research status deck" });
-    expect(within(statusDeck).getAllByRole("listitem")).toHaveLength(4);
-    expect(statusDeck).toHaveTextContent(/Thermal evidence.*Microstructure.*Mesh conversion.*HPC submission/i);
-    expect(screen.queryByText(/HPC ready|Running/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole("list", { name: "Research status deck" })).not.toBeInTheDocument();
+    expect(document.body).not.toHaveTextContent(/Research is in motion|Evidence-first workspace|HPC handoff|Live monitor|Extraction gate|HPC submission/i);
     expect(screen.getByRole("heading", { name: "Grain morphology", level: 2 })).toBeInTheDocument();
     let panel = screen.getByRole("article", { name: "Grain morphology evidence" });
     expect(panel).toHaveTextContent(/nine CUDA P-v cases.*nine closed magnetic loops/i);
-    expect(panel).toHaveTextContent(/nine-case grain-size table.*pending HPC extraction/i);
+    expect(panel).toHaveTextContent(/Current evidence.*Limitation.*Next validation/i);
+    expect(panel).toHaveTextContent(/quantitative grain-size comparison/i);
 
     await userEvent.click(screen.getByRole("button", { name: /Mesh/i }));
     expect(screen.getByRole("heading", { name: "Tetrahedral mesh", level: 2 })).toBeInTheDocument();
@@ -258,12 +259,13 @@ describe("evidence-first content", () => {
     expect(panel).not.toHaveTextContent("No verified figure attached");
   });
 
-  it("keeps the console focused and avoids unavailable feature placeholders", () => {
-    const { container } = renderAt("/console");
+  it("keeps the SmCo workflow focused and avoids dashboard placeholders", () => {
+    const { container } = renderAt("/research/smco-workflow");
     expect(container.querySelector(".site-header")).not.toBeInTheDocument();
     expect(container.querySelector(".site-footer")).not.toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "Future expansion" })).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Console modes" })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /Thermal|Microstructure|Mesh|Magnetic response/i })).toHaveLength(4);
   });
 
   it("uses an honest disabled CV state", () => {
@@ -348,7 +350,7 @@ describe("evidence-first content", () => {
     }
   });
 
-  it.each(["/", "/research", "/console", "/cv"])("excludes fabricated identities on %s", (path) => {
+  it.each(["/", "/research", "/research/smco-workflow", "/console", "/cv"])("excludes fabricated identities on %s", (path) => {
     const { container } = renderAt(path);
     expect(container).not.toHaveTextContent("A. V. Research");
     expect(container).not.toHaveTextContent("Senior Researcher");
