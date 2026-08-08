@@ -22,24 +22,26 @@ export function ResearchPage() {
           <p className="eyebrow">RESEARCH AREAS / 01</p>
           <h2>From manufacturing process to material response</h2>
         </div>
-        <figure className="research-areas-visual" aria-label="Research areas overview">
-          <img
-            src={assetUrl("assets/workflow-concept.png")}
-            alt="Conceptual workflow from PBF process through thermal history and microstructure to a property model"
-          />
-          <figcaption>Conceptual illustration only. Not simulation or experimental data.</figcaption>
-        </figure>
-        <ol className="research-area-index">
-          {researchAreas.map((area, index) => (
-            <li key={area.title}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <div>
-                <strong>{area.title}</strong>
-                <p>{area.scope}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <div className="research-areas-overview">
+          <figure className="research-areas-visual" aria-label="Research areas overview">
+            <img
+              src={assetUrl("assets/workflow-concept.png")}
+              alt="Conceptual workflow from PBF process through thermal history and microstructure to a property model"
+            />
+            <figcaption>Conceptual illustration only. Not simulation or experimental data.</figcaption>
+          </figure>
+          <ol className="research-area-index">
+            {researchAreas.map((area, index) => (
+              <li key={area.title}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <strong>{area.title}</strong>
+                  <p>{area.scope}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
       <section className="academic-projects-section" aria-label="Research project gallery">

@@ -11,8 +11,8 @@ export function HomePage() {
           <h1 aria-label="Computational Materials Scientist">Computational<br />Materials Scientist</h1>
           <p className="lede">Process-structure-property modeling for materials R&amp;D, linking additive manufacturing simulations, microstructure evolution, and property prediction.</p>
           <div className="hero-actions">
-            <Link className="button button--dark" to="/cv">View CV</Link>
-            <Link className="button" to="/research">Research</Link>
+            <Link className="button button--dark" to="/research">View Research</Link>
+            <Link className="button" to="/research/smco-workflow">Explore SmCo Workflow</Link>
           </div>
           <CopyEmail />
         </div>

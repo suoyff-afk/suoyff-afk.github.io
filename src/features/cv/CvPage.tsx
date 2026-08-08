@@ -11,10 +11,11 @@ export function CvPage() {
       </header>
 
       <section className="profile-grid">
-        <div className="portrait-placeholder" role="img" aria-label="Portrait not available">
-          <span>PORTRAIT</span>
-          <strong>Portrait not available</strong>
-          <p>A real photograph will be added when provided.</p>
+        <div className="profile-identity">
+          <p className="eyebrow">CURRENT POSITION</p>
+          <strong>TU Darmstadt</strong>
+          <span>Mechanics of Functional Materials</span>
+          <p className="portrait-note" role="img" aria-label="Portrait not available">Portrait not available</p>
         </div>
         <div className="profile-copy">
           <p className="eyebrow">YIFAN SUO</p>

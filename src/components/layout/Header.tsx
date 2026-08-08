@@ -3,6 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 
 const links = [
   ["Research", "/research"],
+  ["SmCo Workflow", "/research/smco-workflow"],
   ["CV", "/cv"],
 ] as const;
 

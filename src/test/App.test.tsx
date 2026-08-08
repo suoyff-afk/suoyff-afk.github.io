@@ -39,11 +39,16 @@ describe("site routes and navigation", () => {
     const nav = screen.getByRole("navigation", { name: "Primary" });
     const header = screen.getByRole("banner");
     expect(within(nav).queryByRole("link", { name: "Contact" })).not.toBeInTheDocument();
-    expect(within(nav).queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
+    expect(within(nav).getByRole("link", { name: "SmCo Workflow" })).toHaveAttribute("href", "/research/smco-workflow");
     expect(within(header).getAllByRole("link", { name: /CV/i })).toHaveLength(1);
     expect(screen.queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
     await userEvent.click(within(nav).getByRole("link", { name: "Research" }));
     expect(screen.getByRole("heading", { name: "Research", level: 1 })).toBeInTheDocument();
+  });
+
+  it("exposes the SmCo workflow from the home page", () => {
+    renderAt();
+    expect(screen.getByRole("link", { name: "Explore SmCo Workflow" })).toHaveAttribute("href", "/research/smco-workflow");
   });
 
   it("keeps contact as footer utility rather than a navigation destination", async () => {
@@ -75,7 +80,7 @@ describe("site routes and navigation", () => {
     expect(within(screen.getByRole("banner")).queryByRole("dialog")).not.toBeInTheDocument();
     expect(menu).toBeInTheDocument();
     expect(within(menu).getAllByRole("link", { name: /CV/i })).toHaveLength(1);
-    expect(within(menu).queryByRole("link", { name: "Console" })).not.toBeInTheDocument();
+    expect(within(menu).getByRole("link", { name: "SmCo Workflow" })).toHaveAttribute("href", "/research/smco-workflow");
     await userEvent.click(within(menu).getByRole("link", { name: "Research" }));
     expect(screen.getByRole("heading", { name: "Research", level: 1 })).toBeInTheDocument();
     expect(screen.getByRole("main")).toHaveFocus();
