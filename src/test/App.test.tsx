@@ -239,8 +239,11 @@ describe("evidence-first content", () => {
   it("presents the SmCo workflow as an external case study and changes selected evidence", async () => {
     renderAt("/research/smco-workflow");
     expect(screen.getByRole("heading", { name: "SmCo Process-Structure-Property Workflow", level: 1 })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Back to Research" })).toHaveAttribute("href", "/research");
-    expect(screen.getByRole("link", { name: "View CV" })).toHaveAttribute("href", "/cv");
+    const breadcrumb = screen.getByRole("navigation", { name: "Breadcrumb" });
+    expect(within(breadcrumb).getByRole("link", { name: "Research" })).toHaveAttribute("href", "/research");
+    expect(breadcrumb).toHaveTextContent(/Research.*SmCo Workflow/i);
+    expect(screen.queryByRole("link", { name: "Back to Research" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: "View CV" })).not.toBeInTheDocument();
     const previews = screen.getByRole("region", { name: "Research previews" });
     expect(screen.getByRole("region", { name: "SmCo research workflow case study" })).toHaveTextContent(/Workflow map.*Multilayer morphology/i);
     expect(screen.getByRole("complementary", { name: "Research scope" })).toHaveTextContent(/SmCo permanent magnets.*Process-structure-property/i);
@@ -267,10 +270,13 @@ describe("evidence-first content", () => {
     expect(panel).not.toHaveTextContent("No verified figure attached");
   });
 
-  it("keeps the SmCo workflow focused and avoids dashboard placeholders", () => {
+  it("integrates the SmCo workflow into the shared portfolio shell", () => {
     const { container } = renderAt("/research/smco-workflow");
-    expect(container.querySelector(".site-header")).not.toBeInTheDocument();
-    expect(container.querySelector(".site-footer")).not.toBeInTheDocument();
+    expect(container.querySelector(".site-header")).toBeInTheDocument();
+    expect(container.querySelector(".site-footer")).toBeInTheDocument();
+    const primary = screen.getByRole("navigation", { name: "Primary" });
+    expect(within(primary).getByRole("link", { name: "SmCo Workflow" })).toHaveClass("active");
+    expect(within(primary).getByRole("link", { name: "Research" })).not.toHaveClass("active");
     expect(screen.queryByRole("region", { name: "Future expansion" })).not.toBeInTheDocument();
     expect(screen.queryByRole("navigation", { name: "Console modes" })).not.toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Thermal|Microstructure|Mesh|Magnetic response/i })).toHaveLength(4);

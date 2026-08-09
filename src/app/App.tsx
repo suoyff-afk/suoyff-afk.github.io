@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Footer } from "../components/layout/Footer";
 import { Header } from "../components/layout/Header";
 import { ConsolePage } from "../features/console/ConsolePage";
@@ -8,13 +8,10 @@ import { ResearchPage } from "../features/research/ResearchPage";
 import { RouteEffects } from "./RouteEffects";
 
 export function App() {
-  const { pathname } = useLocation();
-  const isWorkflow = pathname === "/research/smco-workflow" || pathname === "/console";
-
   return (
     <div className="site-shell">
       <RouteEffects />
-      {!isWorkflow && <Header />}
+      <Header />
       <main id="main-content" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -25,7 +22,7 @@ export function App() {
           <Route path="*" element={<HomePage />} />
         </Routes>
       </main>
-      {!isWorkflow && <Footer />}
+      <Footer />
     </div>
   );
 }

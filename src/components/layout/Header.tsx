@@ -64,7 +64,7 @@ export function Header() {
   }, [open]);
 
   const navItems = links.map(([label, to]) => (
-    <NavLink key={to} to={to}>{label}</NavLink>
+    <NavLink end={to === "/research"} key={to} to={to}>{label}</NavLink>
   ));
 
   return (
@@ -92,7 +92,7 @@ export function Header() {
         <div ref={menuRef} className="mobile-menu" role="dialog" aria-label="Mobile navigation" aria-modal="true">
           <nav aria-label="Mobile primary">
             {links.map(([label, to], index) => (
-              <NavLink ref={index === 0 ? firstMenuLinkRef : undefined} key={to} to={to}>{label}</NavLink>
+              <NavLink end={to === "/research"} ref={index === 0 ? firstMenuLinkRef : undefined} key={to} to={to}>{label}</NavLink>
             ))}
           </nav>
         </div>

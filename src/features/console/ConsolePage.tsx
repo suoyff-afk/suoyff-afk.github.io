@@ -10,20 +10,18 @@ export function ConsolePage() {
   const hasMicrostructureFigure = selected.id === "grain";
 
   return (
-    <div className="console-canvas">
+    <div className="console-page page-frame interior-page">
       <section className="research-desk" aria-label="SmCo research workflow">
         <header className="desk-hero reveal">
           <div className="desk-hero__copy">
-            <p className="eyebrow">SMCO CASE STUDY / RESEARCH WORKFLOW</p>
+            <nav className="desk-breadcrumb" aria-label="Breadcrumb">
+              <Link to="/research">Research</Link><span aria-hidden="true">/</span><span aria-current="page">SmCo Workflow</span>
+            </nav>
             <h1>SmCo Process-Structure-Property Workflow</h1>
             <p className="desk-hero__lede">LPBF thermal history {" -> "} CUDA 3D grain evolution {" -> "} S2M mesh conversion {" -> "} MOOSE / NISOS magnetic response</p>
           </div>
           <div className="desk-hero__aside">
             <div className="desk-hero__status"><span aria-hidden="true" />Verified evidence only</div>
-            <nav className="desk-hero__actions" aria-label="Case study actions">
-              <Link className="button" to="/research">Back to Research</Link>
-              <Link className="button button--dark" to="/cv">View CV</Link>
-            </nav>
           </div>
         </header>
 
