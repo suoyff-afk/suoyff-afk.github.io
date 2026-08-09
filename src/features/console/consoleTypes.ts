@@ -10,3 +10,15 @@ export type WorkflowStage = {
   nextValidation: string;
   limitation: string;
 };
+
+export type WorkflowProfile = {
+  roleLine: string;
+  contribution: string;
+  toolBoundary: string;
+};
+
+export type RelatedWorkflowProject = {
+  title: string;
+  context: string;
+  to: string;
+};

@@ -14,6 +14,7 @@ export function ResearchProjectCard({
 }) {
   return (
     <article
+      id={project.id}
       className={`research-card research-card--${variant}${project.media ? " has-media" : " is-text-only"}`}
       aria-label={`${project.title} research project`}
       data-variant={variant}

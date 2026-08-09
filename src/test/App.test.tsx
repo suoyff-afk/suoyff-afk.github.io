@@ -213,6 +213,8 @@ describe("evidence-first content", () => {
     const fracture = within(archive).getByRole("heading", { name: "Phase-field simulation of thermal shock in brittle materials" }).closest("article");
     const sic = within(archive).getByRole("heading", { name: "Rare-earth oxide effects in SiC ceramic sintering" }).closest("article");
 
+    expect(dualLaser).toHaveAttribute("id", "dual-laser");
+    expect(battery).toHaveAttribute("id", "battery");
     expect(dualLaser).toHaveTextContent(/Under review.*Engineering with Computers/i);
     expect(dualLaser).toHaveTextContent(/temperature fields.*thermal histories.*elasto-plastic responses/i);
     expect(battery).toHaveTextContent(/3D RVE FE models.*chemo-mechanical response.*damage evolution/i);
@@ -253,21 +255,39 @@ describe("evidence-first content", () => {
     expect(screen.queryByRole("list", { name: "Research status deck" })).not.toBeInTheDocument();
     expect(document.body).not.toHaveTextContent(/Research is in motion|Evidence-first workspace|HPC handoff|Live monitor|Extraction gate|HPC submission/i);
     expect(screen.getByRole("heading", { name: "Grain morphology", level: 2 })).toBeInTheDocument();
+    expect(screen.getByText(/PhD researcher at TU Darmstadt.*computational materials science.*additive manufacturing.*multiphysics simulation/i)).toBeInTheDocument();
+    expect(screen.getByText("SmCo Multiphysics Workflow")).toHaveClass("desk-title--mobile");
+    const contribution = screen.getByRole("region", { name: "My contribution" });
+    expect(contribution).toHaveTextContent(/integrated and evaluated.*CUDA-based grain evolution.*S2M.*MOOSE \/ NISOS/i);
+    expect(contribution).toHaveTextContent(/simulation setup.*parameter studies.*post-processing.*validation.*interpretation/i);
+    expect(contribution).toHaveTextContent(/used and integrated/i);
     let panel = screen.getByRole("article", { name: "Grain morphology evidence" });
     expect(panel).toHaveTextContent(/nine CUDA P-v cases.*nine closed magnetic loops/i);
-    expect(panel).toHaveTextContent(/Current evidence.*Limitation.*Next validation/i);
+    expect(panel).toHaveTextContent(/Stage result.*Method \/ source.*Limitation.*Next validation/i);
     expect(panel).toHaveTextContent(/quantitative grain-size comparison/i);
+
+    await userEvent.click(screen.getByRole("button", { name: /Thermal/i }));
+    panel = screen.getByRole("article", { name: "Thermal history evidence" });
+    expect(panel).toHaveTextContent(/Ongoing validation.*MAE=7\.604 um.*MAPE=5\.810%/i);
+    expect(panel).not.toHaveTextContent("RESULT FIGURE NOT ATTACHED");
 
     await userEvent.click(screen.getByRole("button", { name: /Mesh/i }));
     expect(screen.getByRole("heading", { name: "Tetrahedral mesh", level: 2 })).toBeInTheDocument();
     panel = screen.getByRole("article", { name: "Tetrahedral mesh evidence" });
     expect(panel).toHaveTextContent(/S2M conversion workflow/i);
     expect(panel).toHaveTextContent(/X.*preserved.*Y\/Z.*reversed.*layer-normal Z/i);
+    expect(panel).toHaveTextContent("Ongoing validation");
 
     await userEvent.click(screen.getByRole("button", { name: /Magnetic response/i }));
     panel = screen.getByRole("article", { name: "Magnetic response evidence" });
     expect(panel).toHaveTextContent(/nine loops.*closed.*Hc.*0\.9197-0\.9615/i);
+    expect(panel).toHaveTextContent("Ongoing validation");
     expect(panel).not.toHaveTextContent("No verified figure attached");
+
+    const related = screen.getByRole("region", { name: "Related work" });
+    expect(within(related).getByRole("link", { name: /Dual-laser LPBF/i })).toHaveAttribute("href", "/research#dual-laser");
+    expect(within(related).getByRole("link", { name: /Solid-state battery FE-ANN/i })).toHaveAttribute("href", "/research#battery");
+    expect(within(related).getByRole("link", { name: /Shining 3D/i })).toHaveAttribute("href", "/research#shining-3d");
   });
 
   it("integrates the SmCo workflow into the shared portfolio shell", () => {

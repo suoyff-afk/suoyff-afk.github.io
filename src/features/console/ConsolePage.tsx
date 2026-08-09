@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { assetUrl } from "../../app/routes";
 import { EvidenceTag } from "../../components/common/EvidenceTag";
-import { workflowStages } from "./consoleContent";
+import { relatedWorkflowProjects, workflowProfile, workflowStages } from "./consoleContent";
 
 export function ConsolePage() {
   const [selectedId, setSelectedId] = useState("grain");
@@ -17,11 +17,15 @@ export function ConsolePage() {
             <nav className="desk-breadcrumb" aria-label="Breadcrumb">
               <Link to="/research">Research</Link><span aria-hidden="true">/</span><span aria-current="page">SmCo Workflow</span>
             </nav>
-            <h1>SmCo Process-Structure-Property Workflow</h1>
+            <h1 aria-label="SmCo Process-Structure-Property Workflow">
+              <span className="desk-title--desktop">SmCo Process-Structure-Property Workflow</span>
+              <span className="desk-title--mobile" aria-hidden="true">SmCo Multiphysics Workflow</span>
+            </h1>
+            <p className="desk-role-line">{workflowProfile.roleLine}</p>
             <p className="desk-hero__lede">LPBF thermal history {" -> "} CUDA 3D grain evolution {" -> "} S2M mesh conversion {" -> "} MOOSE / NISOS magnetic response</p>
           </div>
           <div className="desk-hero__aside">
-            <div className="desk-hero__status"><span aria-hidden="true" />Verified evidence only</div>
+            <div className="desk-hero__status"><span aria-hidden="true" />Research evidence</div>
           </div>
         </header>
 
@@ -60,7 +64,7 @@ export function ConsolePage() {
 
             <article className="desk-main" aria-label={`${selected.title} evidence`} aria-live="polite">
               <div className="desk-main__header">
-                <div><p className="eyebrow">CURRENT EVIDENCE</p><h2>{selected.title}</h2></div>
+                <div><p className="eyebrow">STAGE RESULT</p><h2>{selected.title}</h2></div>
                 <EvidenceTag state={selected.status} />
               </div>
 
@@ -70,22 +74,43 @@ export function ConsolePage() {
                   <figcaption>Verified phase-field result. This comparison is a simulation record, not experimental imagery.</figcaption>
                 </figure>
               ) : (
-                <div className="desk-empty-result">
-                  <p className="eyebrow">RESULT FIGURE NOT ATTACHED</p>
-                  <p>No approved result figure is available for this stage. The documented evidence and limitation remain available below.</p>
+                <div className="desk-validation-note">
+                  <p className="eyebrow">Ongoing validation</p>
+                  <p>A publication-ready result figure is not attached. The current quantitative or structural evidence is summarized below.</p>
                 </div>
               )}
 
               <div className="desk-main__evidence">
                 <p>{selected.evidence[0]}</p>
                 <dl>
-                  <div><dt>Source</dt><dd>{selected.source}</dd></div>
+                  <div><dt>Method / source</dt><dd>{selected.source}</dd></div>
                   <div><dt>Limitation</dt><dd>{selected.limitation}</dd></div>
                   <div><dt>Next validation</dt><dd>{selected.nextValidation}</dd></div>
                 </dl>
               </div>
             </article>
           </div>
+        </section>
+
+        <section className="workflow-context" aria-label="Workflow context">
+          <section className="workflow-contribution" aria-label="My contribution">
+            <p className="eyebrow">MY CONTRIBUTION</p>
+            <h2>Workflow integration and evaluation</h2>
+            <p>{workflowProfile.contribution}</p>
+            <p className="workflow-boundary">{workflowProfile.toolBoundary}</p>
+          </section>
+
+          <section className="workflow-related" aria-label="Related work">
+            <p className="eyebrow">RELATED WORK</p>
+            <h2>Transferable experience</h2>
+            <div className="workflow-related__list">
+              {relatedWorkflowProjects.map((project) => (
+                <Link key={project.to} to={project.to}>
+                  <strong>{project.title}</strong><span>{project.context}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
         </section>
       </section>
     </div>

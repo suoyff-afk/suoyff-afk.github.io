@@ -1,4 +1,16 @@
-import type { WorkflowStage } from "./consoleTypes";
+import type { RelatedWorkflowProject, WorkflowProfile, WorkflowStage } from "./consoleTypes";
+
+export const workflowProfile: WorkflowProfile = {
+  roleLine: "PhD researcher at TU Darmstadt | Computational materials science, additive manufacturing, and multiphysics simulation",
+  contribution: "Integrated and evaluated a multiphysics workflow connecting LPBF thermal histories, CUDA-based grain evolution, S2M mesh conversion, and MOOSE / NISOS magnetic-response simulations. My work covers simulation setup, parameter studies, post-processing, validation, and interpretation.",
+  toolBoundary: "CUDA, S2M, MOOSE, and NISOS were used and integrated as workflow tools; this page does not claim independent development of the underlying solvers.",
+};
+
+export const relatedWorkflowProjects: RelatedWorkflowProject[] = [
+  { title: "Dual-laser LPBF", context: "Thermal and elasto-plastic process simulation", to: "/research#dual-laser" },
+  { title: "Solid-state battery FE-ANN", context: "3D RVE and data-driven modeling", to: "/research#battery" },
+  { title: "Shining 3D", context: "Additive-manufacturing materials R&D", to: "/research#shining-3d" },
+];
 
 export const workflowStages: WorkflowStage[] = [
   {
